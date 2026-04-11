@@ -39,9 +39,6 @@ rails db:seed
 ## Stripe Setup
 
 After cloning the project, create a `.env` file in the root directory and add your Stripe keys:
-```bash
-touch .env
-```
 
 ```bash
 STRIPE_SECRET_KEY=sk_test_............
