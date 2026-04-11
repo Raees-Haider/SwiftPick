@@ -197,7 +197,7 @@ products_data = [
     image_path: "decore4.jpg"
   },
   {
-    name: "Bookshelf Decor Thinker Statue",
+    name: "Bookshelf Thinker Statue",
     description: "Bookshelf Decor Thinker Statue - Abstract Art Reading Thinker Sculpture Figurine Aesthetic",
     price: 3499.99,
     stock_quantity: 8,
@@ -206,7 +206,7 @@ products_data = [
     image_path: "decore5.jpg"
   },
   {
-    name: "Candle Plate Holder Tray",
+    name: "Candle Holder Tray",
     description: " Candle Plate Holder Tray: Round Wood Decorative Candle Plate Decor Farmhouse Table Centerpiece",
     price: 4699.99,
     stock_quantity: 80,

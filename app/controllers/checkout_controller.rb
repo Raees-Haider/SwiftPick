@@ -37,7 +37,7 @@ class CheckoutController < ApplicationController
     end
     
     begin
-      amount = calculate_amount_in_cents
+      amount = calculate_amount
       Rails.logger.info "Creating payment intent for amount: #{amount} cents"
       
       payment_intent = Stripe::PaymentIntent.create(
@@ -200,7 +200,7 @@ class CheckoutController < ApplicationController
     subtotal + calculate_tax(subtotal) + SHIPPING_COST
   end
   
-  def calculate_amount_in_cents
+  def calculate_amount
     (@total * 100).to_i
   end
   
