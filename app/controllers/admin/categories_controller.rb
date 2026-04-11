@@ -1,6 +1,6 @@
 class Admin::CategoriesController < ApplicationController
 
-  before_action :require_admin  # make sure only admin can access
+  before_action :require_admin  # Only admin can access
   before_action :set_category, only: [:edit, :update, :destroy]
 
   def index
