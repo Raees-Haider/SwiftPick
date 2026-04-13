@@ -2,8 +2,6 @@ class Admin::ProductsController < ApplicationController
   before_action :require_admin
   before_action :set_product, only: [:edit, :update, :destroy]
 
-  
-
   def index
     @products = Product.all
   end
