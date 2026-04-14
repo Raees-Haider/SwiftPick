@@ -38,21 +38,16 @@
     <div id="error-message" class="text-danger mt-3"></div>
   </form>
 </div>
-
 <script src="https://js.stripe.com/v3/"></script>
-
 <script>
 document.addEventListener("DOMContentLoaded", async () => {
   const stripePublishableKey = '<%= ENV["STRIPE_PUBLISHABLE_KEY"] || "" %>';
-  
   if (!stripePublishableKey) {
     alert('Stripe is not configured. Please contact support.');
     return;
   }
-  
   const stripe = Stripe(stripePublishableKey);
   const submitButton = document.getElementById("submit");
-
   try {
     const response = await fetch("<%= checkout_create_payment_intent_path %>", {
       method: "POST",
@@ -61,9 +56,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
       }
     });
-
     const data = await response.json();
-    
     if (!response.ok) {
       const errorMsg = data.error || data.message || `Server error: ${response.status} ${response.statusText}`;
       console.error('Payment intent creation failed:', errorMsg);
@@ -71,35 +64,27 @@ document.addEventListener("DOMContentLoaded", async () => {
       submitButton.disabled = true;
       return;
     }
-    
     if (data.error) {
       console.error('Payment intent error:', data.error);
       document.getElementById("error-message").textContent = 'Error: ' + data.error;
       submitButton.disabled = true;
       return;
     }
-    
     if (!data.clientSecret) {
       console.error('No clientSecret in response:', data);
       document.getElementById("error-message").textContent = 'Error: Invalid response from server. Please try again.';
       submitButton.disabled = true;
       return;
     }
-
     const { clientSecret } = data;
-
     const elements = stripe.elements({ clientSecret });
     const paymentElement = elements.create("payment");
     paymentElement.mount("#payment-element");
-
     const form = document.getElementById("payment-form");
-
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      
       submitButton.disabled = true;
       submitButton.textContent = 'Processing...';
-
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
@@ -108,7 +93,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         redirect: 'if_required'
       });
-
       if (error) {
         document.getElementById("error-message").textContent = error.message;
         submitButton.disabled = false;
@@ -119,19 +103,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         completeForm.method = 'POST';
         completeForm.action = '<%= checkout_complete_payment_path %>';
         completeForm.style.display = 'none';
-        
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = 'authenticity_token';
         csrfInput.value = document.querySelector('meta[name="csrf-token"]').content;
         completeForm.appendChild(csrfInput);
-        
         const paymentIntentInput = document.createElement('input');
         paymentIntentInput.type = 'hidden';
         paymentIntentInput.name = 'payment_intent_id';
         paymentIntentInput.value = paymentIntent.id;
         completeForm.appendChild(paymentIntentInput);
-        
         document.body.appendChild(completeForm);
         completeForm.submit();
       }

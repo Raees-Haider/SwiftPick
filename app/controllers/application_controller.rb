@@ -1,13 +1,10 @@
 class ApplicationController < ActionController::Base
  allow_browser versions: :modern
-
  stale_when_importmap_changes
-
   helper_method :current_user, :current_cart, :show_navbar?
 
   def current_user
     return unless session[:user_id]
-    
     @current_user ||= User.find_by(id: session[:user_id])
   end
 
@@ -32,7 +29,6 @@ class ApplicationController < ActionController::Base
   def find_or_create_guest_cart
     cart = Cart.find_by(id: session[:cart_id]) if session[:cart_id]
     return cart if cart
-
     cart = Cart.create(user_id: nil)
     session[:cart_id] = cart.id
     cart
@@ -40,14 +36,12 @@ class ApplicationController < ActionController::Base
 
   def require_admin
     return if current_user&.admin?
-
     redirect_to login_path, alert: "Access denied"
   end
 
   # Determines if the navbar should be shown
   def show_navbar?
     return false if auth_controller? || admin_path?
-
     true
   end
 
@@ -58,5 +52,4 @@ class ApplicationController < ActionController::Base
   def admin_path?
     controller_path.start_with?("admin/")
   end
-  
 end

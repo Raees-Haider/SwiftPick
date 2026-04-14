@@ -1,16 +1,13 @@
 <div class="card shadow-sm">
   <div class="card-body">
     <h4 class="card-title mb-4">Review Your Order</h4>
-    
     <!-- Shipping Details -->
     <div class="mb-4">
       <h6 class="mb-2">Shipping Address:</h6>
       <p class="text-muted mb-0"><%= session[:checkout_address] %></p>
       <p class="text-muted mb-0">Phone: <%= session[:checkout_phone] %></p>
     </div>
-    
     <hr>
-    
     <!-- Payment Method -->
     <div class="mb-4">
       <h6 class="mb-2">Payment Method:</h6>
@@ -25,9 +22,7 @@
         <% end %>
       </p>
     </div>
-    
     <hr>
-    
     <!-- Order Items -->
     <div class="mb-4">
       <h6 class="mb-3">Order Items:</h6>

@@ -29,7 +29,6 @@ class CustomersController < ApplicationController
   
   def update_profile
     @user = current_user
-    
     if @user.update(user_params)
       redirect_to profile_path, notice: "Profile updated successfully"
     else

@@ -37,7 +37,6 @@ class ProductsController < ApplicationController
 
   def find_related_products(product)
     category_ids = product.categories.select(:id)
-    
     Product.where(active: true)
            .where.not(id: product.id)
            .joins(:categories)

@@ -11,7 +11,6 @@ class Admin::UsersController < ApplicationController
       redirect_to admin_users_path, alert: "User not found."
       return
     end
-
     if @user.admin?
       redirect_to admin_users_path, alert: "Cannot delete an admin user."
     else

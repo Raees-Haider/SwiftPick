@@ -1,7 +1,6 @@
 class CheckoutController < ApplicationController
   before_action :require_login
   before_action :setup_checkout
-  
   TAX_RATE = 0.18
   SHIPPING_COST = 150
   
@@ -23,13 +22,11 @@ class CheckoutController < ApplicationController
   
   def payment
     return if session[:checkout_payment_method] == 'credit_card'
-    
     redirect_to checkout_path(step: 'review'), alert: "Invalid payment method"
   end
   
   def create_payment_intent
     return render_error("Your cart is empty") if @cart_items.empty?
-    
     # Check if Stripe is configured
     unless Stripe.api_key.present?
       Rails.logger.error "Stripe API key is not configured"
@@ -39,14 +36,12 @@ class CheckoutController < ApplicationController
     begin
       amount = calculate_amount
       Rails.logger.info "Creating payment intent for amount: #{amount} cents"
-      
       payment_intent = Stripe::PaymentIntent.create(
         amount: amount,
         currency: 'pkr',
         payment_method_types: ["card"],
         metadata: { user_id: current_user.id }
       )
-      
       Rails.logger.info "Payment intent created: #{payment_intent.id}"
       render json: { clientSecret: payment_intent.client_secret }
     rescue Stripe::StripeError => e
@@ -61,9 +56,7 @@ class CheckoutController < ApplicationController
   
   def complete_payment
     payment_intent_id = params[:payment_intent_id]
-    
     return redirect_with_error(checkout_payment_path, "Payment information is missing") unless payment_intent_id.present?
-    
     verify_and_create_order(payment_intent_id)
   rescue Stripe::StripeError => e
     log_error("Stripe error in complete_payment", e)
@@ -75,10 +68,8 @@ class CheckoutController < ApplicationController
   
   def create
     return redirect_with_error(checkout_payment_path) if requires_payment? && !payment_completed?
-    
     create_order_with_items
     return if performed? # Already redirected due to validation errors
-    
     clear_checkout_session
     redirect_to customer_dashboard_path, notice: "Order placed successfully!"
   end
@@ -88,43 +79,35 @@ class CheckoutController < ApplicationController
   def setup_checkout
     @cart = current_cart
     @cart_items = @cart.cart_items.includes(:product) if @cart.persisted?
-    
     return redirect_with_error(cart_path, "Your cart is empty") if @cart_items.blank?
-    
     calculate_totals
   end
   
   def handle_address_step
     session[:checkout_address] = params[:shipping_address]
     session[:checkout_phone] = params[:phone]
-    
     if params[:shipping_address].blank? || params[:phone].blank?
       redirect_to checkout_path(step: 'address'), alert: "Please fill in all required fields"
       return
     end
-    
     redirect_to checkout_path(step: 'payment')
   end
   
   def handle_payment_step
     session[:checkout_payment_method] = params[:payment_method]
-    
     if params[:payment_method].blank?
       redirect_to checkout_path(step: 'payment'), alert: "Please select a payment method"
       return
     end
-    
     redirect_to checkout_path(step: 'review')
   end
   
   def verify_and_create_order(payment_intent_id)
     payment_intent = Stripe::PaymentIntent.retrieve(payment_intent_id)
-    
     unless payment_intent.status == 'succeeded'
       Rails.logger.error "Payment Intent status is not succeeded: #{payment_intent.status}"
       return redirect_with_error(checkout_payment_path, "Payment was not successful. Status: #{payment_intent.status}. Please try again.")
     end
-    
     session[:payment_intent_id] = payment_intent_id
     create_order_with_items(status: 'pending', stripe_payment_intent_id: payment_intent_id)
     clear_checkout_session
@@ -133,7 +116,6 @@ class CheckoutController < ApplicationController
   
   def create_order_with_items(status: nil, stripe_payment_intent_id: nil)
     total = calculate_total
-    
     @order = current_user.orders.create(
       status: status || 'pending',
       total_amount: total,
@@ -142,12 +124,10 @@ class CheckoutController < ApplicationController
       payment_method: session[:checkout_payment_method],
       stripe_payment_intent_id: stripe_payment_intent_id || session[:payment_intent_id]
     )
-    
     unless @order.persisted?
       flash[:alert] = @order.errors.full_messages.join(", ")
       redirect_to checkout_path(step: 'review') and return
     end
-    
     create_order_items
     update_product_stock
     clear_cart

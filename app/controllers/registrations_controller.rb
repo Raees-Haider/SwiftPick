@@ -8,7 +8,6 @@ class RegistrationsController < ApplicationController
   def create
     @user = User.new(user_params)
     @user.role = "customer"  # all signup are by default customers
-
     if @user.save
       session[:user_id] = @user.id
       redirect_to customer_dashboard_path, notice: "Account created successfully! Welcome, #{@user.name}!"

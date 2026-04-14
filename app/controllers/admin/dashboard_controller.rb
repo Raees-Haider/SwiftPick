@@ -4,18 +4,13 @@ module Admin
 
     def index
       @orders = Order.includes(:order_items, :user).order(created_at: :desc)
-      
       @total_sales = @orders.count
       @total_revenue = @orders.sum(:total_amount) || 0
       @total_customers = User.where(role: 'customer').count
       @total_products = Product.where(active: true).count
-      
       @sales_data = get_sales_data_by_day(30)
-      
       @revenue_data = get_revenue_data_by_day(30)
-      
       @monthly_sales_data = get_sales_data_by_month(12)
-      
       @monthly_revenue_data = get_revenue_data_by_month(12)
     end
     

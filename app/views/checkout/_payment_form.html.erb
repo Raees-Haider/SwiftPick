@@ -1,10 +1,8 @@
 <div class="card shadow-sm">
   <div class="card-body">
     <h4 class="card-title mb-4">Payment Method</h4>
-    
     <%= form_with url: checkout_update_step_path, method: :patch, local: true do |f| %>
       <%= hidden_field_tag :step, 'payment' %>
-      
       <div class="mb-3">
         <div class="form-check mb-3 border rounded p-3">
           <%= radio_button_tag :payment_method, "cash_on_delivery", @payment_method == "cash_on_delivery", 
