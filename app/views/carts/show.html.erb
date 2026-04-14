@@ -50,7 +50,6 @@
                     <% product = cart_item.product %>
                     <% max_quantity = product.stock_quantity %>
                     <% current_quantity = cart_item.quantity %>
-                    
                     <%= form_with url: cart_cart_item_path(cart_item), method: :patch, local: true, class: "d-flex align-items-center" do |f| %>
                       <button type="submit" name="quantity_action" value="decrease" class="btn btn-outline-warning border-warning px-3 py-1" <%= 'disabled' if current_quantity <= 1 %>>
                         −
@@ -87,12 +86,10 @@
         <div class="card shadow-sm sticky-top" style="top: 20px;">
           <div class="card-body">
             <h5 class="card-title mb-3">Order Summary</h5>
-            
             <% subtotal = @cart_items.sum { |item| item.product.price * item.quantity } %>
             <% tax = subtotal * 0.18 %>
             <% shipping = 150 %>
             <% total = subtotal + tax + shipping %>
-
             <div class="d-flex justify-content-between mb-2">
               <span>Subtotal:</span>
               <span>Rs <%= subtotal.round(2) %></span>

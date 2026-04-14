@@ -45,11 +45,9 @@
                       <span class="text-muted">No Image</span>
                     <% end %>
                   </td>
-
                   <td>
                     <strong><%= product.name %></strong>
                   </td>
-
                   <td>
                     <% if product.categories.any? %>
                       <% product.categories.each do |category| %>
@@ -59,7 +57,6 @@
                       <span class="text-muted">Category not assigned</span>
                     <% end %>
                   </td>
-
                   <td>
                     <strong>Rs <%= product.price %></strong>
                   </td>
@@ -73,7 +70,6 @@
                       <span class="badge bg-secondary">Inactive</span>
                     <% end %>
                   </td>
-
                   <td class="text-center">
                     <div class="btn-group" role="group">
                       <%= link_to edit_admin_product_path(product),

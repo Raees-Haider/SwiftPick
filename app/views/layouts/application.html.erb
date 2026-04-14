@@ -3,17 +3,13 @@
   <head>
     <title><%= "SwiftPick" %></title>
     <link rel="icon" href="<%= image_url('logo.png') %>" type="image/png">
-
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <!-- Your app stylesheet -->
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Rails importmap / JS -->
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
@@ -63,11 +59,9 @@
                     class: "img-fluid rounded",
                     style: "height:40px; object-fit:cover;" %>
           <% end %>
-
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbar" aria-controls="topNavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-
           <div class="collapse navbar-collapse" id="topNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item"><%= link_to "Home", root_path, class: "nav-link px-3" %></li>
@@ -98,13 +92,10 @@
                 </button>
               </div>
             </form>
-
-
             <div class="d-flex align-items-center">
               <% unless current_user %>
                 <%= link_to "Login", login_path, class: "btn btn-outline-light" %>
               <% end %>
-
               <%= link_to cart_path, class: "d-flex align-items-center text-decoration-none ms-3 position-relative" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-cart" viewBox="0 0 16 16">
                   <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
@@ -114,7 +105,6 @@
           </div>
         </div>
       </nav>
-
       <!-- Secondary Navbar -->
       <nav class="navbar navbar-expand-lg navbar-dark py-2" style="background-color: #32323D">
         <div class="container-fluid px-4">
@@ -181,8 +171,6 @@
       <% end %>
     </header>
     <% end %>
-
-    
       <main>
         <%= yield %>
       </main>
@@ -243,9 +231,7 @@
               </ul>
             </div>
           </div>
-          
           <hr class="bg-secondary my-4">
-          
           <!-- Copyright -->
           <div class="row align-items-center">
             <div class="col-md-6 mb-3 mb-md-0">
@@ -262,25 +248,20 @@
         </div>
       </footer>
       <% end %>
-
       <!-- Bootstrap JS Bundle -->
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
       function showToasts() {
         document.querySelectorAll('.toast').forEach(function (toastEl) {
           new bootstrap.Toast(toastEl).show();
         });
       }
-
       document.addEventListener('DOMContentLoaded', showToasts);
       document.addEventListener('turbo:load', showToasts);
-
       // Sidebar functionality
       document.addEventListener('DOMContentLoaded', function() {
         const allMenuBtn = document.getElementById('allMenuBtn');
         const userSidebar = document.getElementById('userSidebar');
-
         if (allMenuBtn && userSidebar) {
           allMenuBtn.addEventListener('click', function() {
             const offcanvas = new bootstrap.Offcanvas(userSidebar);
@@ -289,8 +270,5 @@
         }
       });
     </script>
-
-
-      
   </body>
 </html>
