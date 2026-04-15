@@ -6,7 +6,7 @@ SwiftPick is a modern eCommerce web application built with Ruby on Rails. It ena
 This project is built with:
 
 - Ruby 3.2.3  
-- Rails 8.1.1
+- Rails 8.1.3
 - SQLite3
 
 ## Clone the repository
